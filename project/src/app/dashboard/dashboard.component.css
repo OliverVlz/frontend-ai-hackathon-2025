@@ -1,0 +1,12 @@
+.dashboard-container {
+  padding: 16px;
+}
+
+mat-toolbar {
+  margin-bottom: 16px;
+}
+
+mat-card {
+  text-align: center;
+  background-color: #f5f5f5;
+}
