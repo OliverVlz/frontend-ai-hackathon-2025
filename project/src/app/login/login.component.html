@@ -3,9 +3,9 @@
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Email</mat-label>
-        <input matInput formControlName="email" type="email" placeholder="demo@demo.com">
-        <mat-error *ngIf="loginForm.get('email')?.hasError('required')">El correo es obligatorio</mat-error>
-        <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Correo no válido</mat-error>
+        <input matInput formControlName="username" type="username" placeholder="demo@demo.com">
+        <mat-error *ngIf="loginForm.get('username')?.hasError('required')">El correo es obligatorio</mat-error>
+        <mat-error *ngIf="loginForm.get('username')?.hasError('username')">Correo no válido</mat-error>
       </mat-form-field>
   
       <mat-form-field appearance="outline" class="full-width">
