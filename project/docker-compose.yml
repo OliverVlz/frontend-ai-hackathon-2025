@@ -8,11 +8,9 @@ services:
     ports:
       - "4200:4200"
     volumes:
-      - ./src:/app/src
-      - ./public:/app/public
-      - ./angular.json:/app/angular.json
-      - ./package.json:/app/package.json
-      - ./package-lock.json:/app/package-lock.json
-      - ./tsconfig.json:/app/tsconfig.json
+      - .:/app
+      - /app/node_modules
+    working_dir: /app
+    command: npm start
     environment:
       - NODE_ENV=development
