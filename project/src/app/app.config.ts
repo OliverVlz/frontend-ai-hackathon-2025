@@ -10,6 +10,9 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { ReactiveFormsModule } from '@angular/forms';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,7 +27,10 @@ export const appConfig: ApplicationConfig = {
       MatDividerModule,
       MatToolbarModule,
       MatGridListModule,
-      MatCardModule
+      MatCardModule,
+      MatFormFieldModule,
+      MatInputModule,
+      ReactiveFormsModule
     )
   ]
 };
