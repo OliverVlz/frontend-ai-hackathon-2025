@@ -1,25 +1,13 @@
 version: '3.8'
 
 services:
-  # Servicio para construir y servir la aplicación Angular
   frontend:
     build:
-      context: .  # Ubicación del Dockerfile, en el directorio actual
-      dockerfile: Dockerfile  # Dockerfile para construir la app
-    volumes:
-      - ./src:/app/src  # Monta el código fuente del proyecto en el contenedor
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "4200:80"  # Mapea el puerto 4200 de tu máquina local al 80 del contenedor
+      - "4200:4200"
+    volumes:
+      - .:/app
     environment:
-      - NODE_ENV=production
-    command: npm run start -- --host 0.0.0.0  # Comando para iniciar la aplicación Angular
-
-  # Servicio para Nginx (si necesitas servir el proyecto en producción)
-  nginx:
-    image: nginx:alpine
-    volumes:
-      - ./dist:/usr/share/nginx/html  # Copia la carpeta dist compilada en el contenedor de Nginx
-    ports:
-      - "80:80"  # Mapea el puerto 80 de tu máquina local al 80 del contenedor
-    depends_on:
-      - frontend  # Asegura que el frontend esté disponible antes de iniciar Nginx
+      - NODE_ENV=development
