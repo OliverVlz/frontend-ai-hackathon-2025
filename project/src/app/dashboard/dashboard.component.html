@@ -1,18 +1,44 @@
-<mat-toolbar color="primary">
-  <span>Dashboard</span>
-</mat-toolbar>
+<mat-sidenav-container class="dashboard-container">
+  <mat-sidenav mode="side" opened>
+    <mat-nav-list>
+      <mat-list-item>
+        <button mat-button>Inicio</button>
+      </mat-list-item>
+      <mat-list-item>
+        <button mat-button>Mis cultivos</button>
+      </mat-list-item>
+      <div class="user-section">
+        <mat-divider></mat-divider>
+        <mat-list-item>
+          <mat-menu #userMenu="matMenu">
+            <button mat-menu-item>Modificar información</button>
+            <button mat-menu-item>Cambiar contraseña</button>
+            <button mat-menu-item>Cerrar sesión</button>
+          </mat-menu>
+          <button mat-button [matMenuTriggerFor]="userMenu">Usuario</button>
+        </mat-list-item>
+      </div>
+    </mat-nav-list>
+  </mat-sidenav>
 
-<div class="dashboard-container">
-  <mat-grid-list cols="3" rowHeight="2:1" gutterSize="16px">
-    <mat-grid-tile *ngFor="let card of cards" [colspan]="1" [rowspan]="1">
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>{{ card.title }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p>{{ card.content }}</p>
-        </mat-card-content>
-      </mat-card>
-    </mat-grid-tile>
-  </mat-grid-list>
-</div>
+<mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <span>Dashboard</span>
+    </mat-toolbar>
+
+    <div class="dashboard-content">
+      <mat-grid-list cols="3" rowHeight="2:1" gutterSize="16px">
+        <mat-grid-tile *ngFor="let card of cards" [colspan]="1" [rowspan]="1">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>{{ card.title }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p>{{ card.content }}</p>
+            </mat-card-content>
+          </mat-card>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
