@@ -2,25 +2,36 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root',
+})
 export class AuthService {
-  private baseUrl = 'http://localhost:8000/api';
+  private apiUrl = 'http://localhost:8000/api';  // URL base del backend Django
 
   constructor(private http: HttpClient) {}
 
+  // Registro de usuario
   register(data: { username: string; email: string; password: string }): Observable<any> {
-    return this.http.post(`${this.baseUrl}/registro/`, data);
+    return this.http.post(`${this.apiUrl}/registro/`, data);
   }
 
+  // Login y obtener tokens
   login(data: { username: string; password: string }): Observable<any> {
-    return this.http.post(`${this.baseUrl}/token/`, data);
+    return this.http.post(`${this.apiUrl}/token/`, data);
   }
 
-  saveTokens(access: string, refresh: string): void {
-    localStorage.setItem('access_token', access);
-    localStorage.setItem('refresh_token', refresh);
+  // Obtener el perfil del usuario
+  getProfile(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/perfil/`);
   }
 
+  // Guardar tokens en localStorage
+  saveTokens(accessToken: string, refreshToken: string): void {
+    localStorage.setItem('access_token', accessToken);
+    localStorage.setItem('refresh_token', refreshToken);
+  }
+
+  // Obtener token de acceso
   getAccessToken(): string | null {
     return localStorage.getItem('access_token');
   }
