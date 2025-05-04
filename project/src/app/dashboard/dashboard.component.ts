@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -7,22 +8,30 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatTabsModule } from '@angular/material/tabs';
+
+import { ZonaCultivoFormComponent } from '../dashboard/zona-cultivo-form/zona-cultivo-form.component';
+import { ZonaCultivoListComponent } from '../dashboard/zona-cultivo-list/zona-cultivo-list.component';
 
 @Component({
   selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss'],
   standalone: true,
   imports: [
-    MatToolbarModule,
-    MatCardModule,
-    MatGridListModule,
+    CommonModule,
     MatSidenavModule,
     MatListModule,
-    MatMenuModule,
+    MatToolbarModule,
     MatButtonModule,
-    MatDividerModule
-  ],
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+    MatMenuModule,
+    MatDividerModule,
+    MatGridListModule,
+    MatCardModule,
+    MatTabsModule,
+    ZonaCultivoFormComponent,
+    ZonaCultivoListComponent
+  ]
 })
 export class DashboardComponent {
   cards = [

@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8000/api';  // URL base del backend Django
+  private apiUrl = environment.apiUrl;  // URL base del backend Django desde la configuración del entorno
 
   constructor(private http: HttpClient) {}
 
@@ -17,7 +18,9 @@ export class AuthService {
 
   // Login y obtener tokens
   login(data: { username: string; password: string }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/token/`, data);
+    // La ruta de token está en el urls.py principal, no en riego/urls.py
+    // Por eso necesitamos quitar 'api/' de la ruta y usar '/api/token/' directamente
+    return this.http.post(`${environment.apiUrl.replace('/api', '')}/api/token/`, data);
   }
 
   // Obtener el perfil del usuario

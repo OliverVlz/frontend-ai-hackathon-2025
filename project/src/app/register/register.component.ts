@@ -42,15 +42,44 @@ export class RegisterComponent {
   onSubmit(): void {
     if (this.registerForm.valid) {
       const { username, email, password } = this.registerForm.value;
+      console.log('Datos a enviar:', { username, email, password });
+      
       this.authService.register({ username, email, password }).subscribe({
-        next: () => {
+        next: (response) => {
+          console.log('Respuesta exitosa:', response);
           alert('Usuario registrado con éxito');
           this.router.navigate(['/login']);
         },
         error: (err) => {
-          alert('Error en el registro: ' + err.message);
+          console.error('Error completo:', err);
+          let errorMsg = 'Error en el registro';
+          
+          if (err.error && err.error.error) {
+            errorMsg += ': ' + err.error.error;
+          } else if (err.error && typeof err.error === 'object') {
+            // Formatear errores de validación
+            const errorDetails = Object.entries(err.error)
+              .map(([field, msgs]) => `${field}: ${msgs}`)
+              .join(', ');
+            
+            if (errorDetails) {
+              errorMsg += `: ${errorDetails}`;
+            }
+          } else if (err.message) {
+            errorMsg += ': ' + err.message;
+          }
+          
+          alert(errorMsg);
         }
       });
+    } else {
+      // Marcar todos los campos como tocados para mostrar errores de validación
+      Object.keys(this.registerForm.controls).forEach(key => {
+        const control = this.registerForm.get(key);
+        control?.markAsTouched();
+      });
+      
+      alert('Por favor, complete todos los campos correctamente');
     }
   }
 }
