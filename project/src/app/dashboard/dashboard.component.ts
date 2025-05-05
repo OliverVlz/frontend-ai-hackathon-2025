@@ -8,10 +8,9 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatTabsModule } from '@angular/material/tabs';
 
-import { ZonaCultivoFormComponent } from '../dashboard/zona-cultivo-form/zona-cultivo-form.component';
-import { ZonaCultivoListComponent } from '../dashboard/zona-cultivo-list/zona-cultivo-list.component';
+import { CrearCultivoComponent } from '../dashboard/crear-cultivo/crear-cultivo.component';
+import { CultivoListComponent } from '../dashboard/mis-cultivos/cultivo-list/cultivo-list.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -28,15 +27,14 @@ import { ZonaCultivoListComponent } from '../dashboard/zona-cultivo-list/zona-cu
     MatDividerModule,
     MatGridListModule,
     MatCardModule,
-    MatTabsModule,
-    ZonaCultivoFormComponent,
-    ZonaCultivoListComponent
+    CrearCultivoComponent,
+    CultivoListComponent
   ]
 })
 export class DashboardComponent {
-  cards = [
-    { title: 'Card 1', content: 'Content for card 1' },
-    { title: 'Card 2', content: 'Content for card 2' },
-    { title: 'Card 3', content: 'Content for card 3' },
-  ];
+  seccion: 'inicio' | 'crear-cultivo' | 'mis-cultivos' = 'inicio';
+
+  seleccionarSeccion(seccion: 'inicio' | 'crear-cultivo' | 'mis-cultivos') {
+    this.seccion = seccion;
+  }
 }

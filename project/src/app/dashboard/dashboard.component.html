@@ -2,10 +2,13 @@
   <mat-sidenav mode="side" opened>
     <mat-nav-list>
       <mat-list-item>
-        <button mat-button>Inicio</button>
+        <button mat-button (click)="seleccionarSeccion('inicio')">Inicio</button>
       </mat-list-item>
       <mat-list-item>
-        <button mat-button>Mis cultivos</button>
+        <button mat-button (click)="seleccionarSeccion('crear-cultivo')">Crear cultivo</button>
+      </mat-list-item>
+      <mat-list-item>
+        <button mat-button (click)="seleccionarSeccion('mis-cultivos')">Mis cultivos</button>
       </mat-list-item>
       <div class="user-section">
         <mat-divider></mat-divider>
@@ -27,37 +30,36 @@
     </mat-toolbar>
 
     <div class="dashboard-content">
-      <!-- Pestañas para navegar entre diferentes secciones -->
-      <mat-tab-group animationDuration="300ms">
-        <mat-tab label="Resumen">
-          <div class="tab-content">
-            <mat-grid-list cols="3" rowHeight="2:1" gutterSize="16px">
-              <mat-grid-tile *ngFor="let card of cards" [colspan]="1" [rowspan]="1">
-                <mat-card>
-                  <mat-card-header>
-                    <mat-card-title>{{ card.title }}</mat-card-title>
-                  </mat-card-header>
-                  <mat-card-content>
-                    <p>{{ card.content }}</p>
-                  </mat-card-content>
-                </mat-card>
-              </mat-grid-tile>
-            </mat-grid-list>
+      <ng-container [ngSwitch]="seccion">
+        <ng-container *ngSwitchCase="'inicio'">
+          <h2>HOLA BIENVENIDO AL INICIO</h2>
+          <div class="card-container">
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Resumen de cultivos</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <p>Aquí puedes ver un resumen de tus cultivos, estadísticas, etc.</p>
+              </mat-card-content>
+            </mat-card>
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Próximos riegos</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <p>Próximos eventos de riego programados...</p>
+              </mat-card-content>
+            </mat-card>
+            <!-- Puedes agregar más cards o componentes aquí -->
           </div>
-        </mat-tab>
-        
-        <mat-tab label="Nueva Zona de Cultivo">
-          <div class="tab-content">
-            <app-zona-cultivo-form></app-zona-cultivo-form>
-          </div>
-        </mat-tab>
-        
-        <mat-tab label="Mis Zonas">
-          <div class="tab-content">
-            <app-zona-cultivo-list></app-zona-cultivo-list>
-          </div>
-        </mat-tab>
-      </mat-tab-group>
+        </ng-container>
+        <ng-container *ngSwitchCase="'crear-cultivo'">
+          <app-crear-cultivo></app-crear-cultivo>
+        </ng-container>
+        <ng-container *ngSwitchCase="'mis-cultivos'">
+          <app-cultivo-list></app-cultivo-list>
+        </ng-container>
+      </ng-container>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

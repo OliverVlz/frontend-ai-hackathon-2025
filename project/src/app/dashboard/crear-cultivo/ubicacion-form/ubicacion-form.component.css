@@ -1,0 +1,12 @@
+.full-width {
+  width: 100%;
+}
+
+mat-card {
+  margin: 24px auto;
+  max-width: 500px;
+}
+
+button[type="submit"] {
+  margin-top: 16px;
+}

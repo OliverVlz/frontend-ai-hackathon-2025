@@ -1,0 +1,6 @@
+<div *ngIf="step === 1">
+  <app-ubicacion-form (ubicacionCreada)="onUbicacionCreada($event)"></app-ubicacion-form>
+</div>
+<div *ngIf="step === 2 && ubicacionId !== null">
+  <app-cultivo-form [ubicacionId]="ubicacionId" (cultivoCreado)="onCultivoCreado($event)"></app-cultivo-form>
+</div>
