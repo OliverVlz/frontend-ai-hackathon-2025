@@ -1,27 +1,100 @@
-/* Estilos para el dashboard */
+/* Estilos para el contenedor principal del dashboard */
 .dashboard-container {
-  padding: 20px;
+  height: 100vh; // Ocupa toda la altura de la ventana
+  display: flex;
+  flex-direction: row;
+  
+  // Estilos para el sidenav
+  mat-sidenav {
+    width: 250px;
+    background-color: #f4f4f4;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    
+    // Estilos para la lista de navegación
+    mat-nav-list {
+      padding: 0;
+      
+      mat-list-item {
+        padding: 0;
+        
+        button {
+          width: 100%;
+          text-align: left;
+          padding: 10px 16px;
+          
+          &:hover {
+            background-color: rgba(0, 0, 0, 0.04);
+          }
+        }
+      }
+      
+      .user-section {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        
+        mat-divider {
+          margin: 8px 0;
+        }
+      }
+    }
+  }
+  
+  // Estilos para el contenido principal
+  mat-sidenav-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    
+    // Barra de herramientas
+    mat-toolbar {
+      margin-bottom: 20px;
+      
+      span {
+        flex: 1;
+      }
+    }
+    
+    // Contenido del dashboard
+    .dashboard-content {
+      padding: 16px;
+      flex: 1;
+      overflow-y: auto;
+      
+      // Grupo de pestañas
+      .mat-tab-group {
+        margin-top: 20px;
+      }
+      
+      // Contenedor de tarjetas
+      .card-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+      }
+      
+      // Estilos para las tarjetas
+      mat-card {
+        margin-bottom: 20px;
+        
+        mat-card-header {
+          margin-bottom: 12px;
+        }
+        
+        mat-card-actions {
+          display: flex;
+          justify-content: flex-end;
+          padding: 8px 16px;
+          
+          button {
+            margin-left: 8px;
+          }
+        }
+      }
+    }
+  }
 }
-
-.mat-toolbar {
-  margin-bottom: 20px;
-}
-
-.mat-card {
-  margin-bottom: 20px;
-}
-
-.mat-tab-group {
-  margin-top: 20px;
-}
-
-.card-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-  margin-top: 20px;
-}
-
 .card-content {
   padding: 16px;
 }
