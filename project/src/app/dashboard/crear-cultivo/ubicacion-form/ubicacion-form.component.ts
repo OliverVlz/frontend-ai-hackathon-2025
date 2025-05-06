@@ -35,15 +35,33 @@ export class UbicacionFormComponent {
   ) {
     this.ubicacionForm = this.fb.group({
       pais: ['', Validators.required],
-      ciudad: ['', Validators.required],
-      // El polígono se agregará en el segundo paso, aquí solo datos básicos
+      ciudad: ['', Validators.required]
     });
+  }
+
+  getCoordenadasFicticias() {
+    return {
+      type: 'Polygon',
+      coordinates: [[
+        [-64.188, -31.420],
+        [-64.190, -31.421],
+        [-64.189, -31.423],
+        [-64.187, -31.422],
+        [-64.188, -31.420]
+      ]]
+    };
   }
 
   onSubmit(): void {
     if (this.ubicacionForm.valid) {
       this.isSubmitting = true;
-      this.http.post(`${environment.apiUrl}/ubicaciones/`, this.ubicacionForm.value)
+
+      const payload = {
+        ...this.ubicacionForm.value,
+        coordenadas: this.getCoordenadasFicticias()
+      };
+
+      this.http.post(`${environment.apiUrl}/ubicaciones/`, payload)
         .subscribe({
           next: (ubicacion: any) => {
             this.snackBar.open('Ubicación creada con éxito', 'Cerrar', { duration: 3000 });
@@ -53,6 +71,7 @@ export class UbicacionFormComponent {
           },
           error: (error: any) => {
             this.snackBar.open('Error al crear ubicación', 'Cerrar', { duration: 4000 });
+            console.error(error);
             this.isSubmitting = false;
           }
         });

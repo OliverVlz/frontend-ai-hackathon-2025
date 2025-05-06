@@ -1,6 +1,24 @@
-<div *ngIf="step === 1">
-  <app-ubicacion-form (ubicacionCreada)="onUbicacionCreada($event)"></app-ubicacion-form>
-</div>
-<div *ngIf="step === 2 && ubicacionId !== null">
-  <app-cultivo-form [ubicacionId]="ubicacionId" (cultivoCreado)="onCultivoCreado($event)"></app-cultivo-form>
+<div class="container" style="padding: 1rem;">
+  <ng-container [ngSwitch]="step">
+
+    <!-- Paso 1: Formulario de ubicación -->
+    <ng-container *ngSwitchCase="1">
+      <h2>Crear ubicación</h2>
+      <app-ubicacion-form (ubicacionCreada)="onUbicacionCreada($event)"></app-ubicacion-form>
+    </ng-container>
+
+    <!-- Paso 2: Formulario de cultivo -->
+    <ng-container *ngSwitchCase="2">
+      <h2>Crear cultivo</h2>
+      <app-cultivo-form 
+        [ubicacionId]="ubicacionId" 
+        (cultivoCreado)="onCultivoCreado($event)">
+      </app-cultivo-form>
+
+      <div style="margin-top: 1rem;">
+        <button mat-button color="warn" (click)="step = 1">← Volver a ubicación</button>
+      </div>
+    </ng-container>
+
+  </ng-container>
 </div>

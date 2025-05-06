@@ -13,13 +13,6 @@
       <mat-error *ngIf="hasError('ciudad', 'required')">La ciudad es obligatoria</mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Nombre de la ubicación</mat-label>
-      <input matInput formControlName="nombre" required maxlength="200">
-      <mat-error *ngIf="hasError('nombre', 'required')">El nombre es obligatorio</mat-error>
-      <mat-error *ngIf="hasError('nombre', 'maxlength')">Máximo 200 caracteres</mat-error>
-    </mat-form-field>
-
     <button mat-raised-button color="primary" type="submit" [disabled]="isSubmitting">Crear ubicación</button>
   </form>
 </mat-card>

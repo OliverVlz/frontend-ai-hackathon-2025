@@ -1,14 +1,15 @@
-import { Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { CultivoService } from '../../../services/cultivo.service';
-import { finalize } from 'rxjs/operators';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-cultivo-form',
@@ -20,90 +21,77 @@ import { finalize } from 'rxjs/operators';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSelectModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
+    MatSelectModule,
+    MatOptionModule
   ]
 })
-export class CultivoFormComponent implements OnInit, OnChanges {
-  @Input() ubicacionId!: number | null;
+export class CultivoFormComponent {
+  @Input() ubicacionId: any;
   @Output() cultivoCreado = new EventEmitter<any>();
-
   cultivoForm: FormGroup;
+  isSubmitting = false;
+
   tiposCultivo: any[] = [];
   tiposRiego: any[] = [];
-  etapasCrecimiento = [
-    { value: 'plantula', viewValue: 'Plántula' },
-    { value: 'adulto', viewValue: 'Adulto' },
-    { value: 'anciano', viewValue: 'Anciano' }
+  etapas = [
+    { value: 'plantula', display: 'Plántula' },
+    { value: 'crecimiento', display: 'Crecimiento' },
+    { value: 'madurez', display: 'Madurez' },
   ];
-  isSubmitting = false;
 
   constructor(
     private fb: FormBuilder,
-    private cultivoService: CultivoService,
+    private http: HttpClient,
     private snackBar: MatSnackBar
   ) {
     this.cultivoForm = this.fb.group({
-      nombre: ['', [Validators.required, Validators.maxLength(200)]],
-      tipo_cultivo: ['', Validators.required],
+      nombre: ['', Validators.required],
       etapa_crecimiento: ['', Validators.required],
+      tipo_cultivo: ['', Validators.required],
       tipo_riego: ['', Validators.required],
-      tasa_flujo: [null, [Validators.required, Validators.min(0.1)]],
-      ubicacion: [null, Validators.required]
-    });
+      tasa_flujo: ['', [Validators.required, Validators.min(1)]],
+      ubicacion: ['', Validators.required],
+    });    
   }
 
   ngOnInit(): void {
-    this.cargarTiposCultivo();
-    this.cargarTiposRiego();
-    if (this.ubicacionId !== null) {
-      this.cultivoForm.patchValue({ ubicacion: this.ubicacionId });
-    }
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['ubicacionId'] && this.ubicacionId !== null) {
-      this.cultivoForm.patchValue({ ubicacion: this.ubicacionId });
-    }
-  }
-
-  cargarTiposCultivo(): void {
-    this.cultivoService.getTiposCultivo().subscribe({
-      next: (data: any[]) => this.tiposCultivo = data,
-      error: () => this.snackBar.open('Error al cargar tipos de cultivo', 'Cerrar', { duration: 3000 })
+    this.http.get<any[]>(`${environment.apiUrl}/tipos-cultivo/`).subscribe({
+      next: (data) => { this.tiposCultivo = data; },
+      error: (error) => { console.error('Error al obtener tipos de cultivo', error); }
     });
-  }
 
-  cargarTiposRiego(): void {
-    this.cultivoService.getTiposRiego().subscribe({
-      next: (data: any[]) => this.tiposRiego = data,
-      error: () => this.snackBar.open('Error al cargar tipos de riego', 'Cerrar', { duration: 3000 })
+    this.http.get<any[]>(`${environment.apiUrl}/tipos-riego/`).subscribe({
+      next: (data) => { this.tiposRiego = data; },
+      error: (error) => { console.error('Error al obtener tipos de riego', error); }
     });
+
+    if (this.ubicacionId) {
+      this.cultivoForm.patchValue({
+        ubicacion: this.ubicacionId  
+      });
+    }
   }
 
   onSubmit(): void {
     if (this.cultivoForm.valid) {
       this.isSubmitting = true;
-      this.cultivoService.createCultivo(this.cultivoForm.value)
-        .pipe(finalize(() => this.isSubmitting = false))
-        .subscribe(
-          (response: any) => {
-            this.snackBar.open('Cultivo creado con éxito', 'Cerrar', { duration: 3000 });
-            this.cultivoForm.reset();
-            this.cultivoCreado.emit(response);
-          },
-          (error: any) => {
-            let errorMessage = 'Error al crear cultivo';
-            if (error.error && typeof error.error === 'object') {
-              const errorDetails = Object.entries(error.error)
-                .map(([field, msgs]) => `${field}: ${msgs}`)
-                .join(', ');
-              if (errorDetails) errorMessage += `: ${errorDetails}`;
-            }
-            this.snackBar.open(errorMessage, 'Cerrar', { duration: 5000 });
-          }
-        );
+      const payload = this.cultivoForm.value;
+
+      this.http.post(`${environment.apiUrl}/cultivos/`, payload).subscribe({
+        next: (cultivo: any) => {
+          this.snackBar.open('Cultivo creado con éxito', 'Cerrar', { duration: 3000 });
+          this.cultivoForm.reset();
+          this.cultivoCreado.emit(cultivo);
+          this.isSubmitting = false;
+        },
+        error: (error: any) => {
+          this.snackBar.open('Error al crear cultivo', 'Cerrar', { duration: 4000 });
+          console.error('Detalles del error:', error?.error);
+          this.isSubmitting = false;
+        }
+      });
     } else {
       Object.keys(this.cultivoForm.controls).forEach(key => {
         const control = this.cultivoForm.get(key);
