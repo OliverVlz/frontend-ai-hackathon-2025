@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, AfterViewInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
@@ -8,6 +8,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
+
+import * as L from 'leaflet';
+import 'leaflet-draw';
+import 'leaflet-control-geocoder';
 
 @Component({
   selector: 'app-ubicacion-form',
@@ -23,10 +27,13 @@ import { environment } from '../../../../environments/environment';
     MatCardModule
   ]
 })
-export class UbicacionFormComponent {
+export class UbicacionFormComponent implements AfterViewInit, OnDestroy {
   @Output() ubicacionCreada = new EventEmitter<any>();
   ubicacionForm: FormGroup;
   isSubmitting = false;
+  map!: L.Map;
+  drawnCoordinates: GeoJSON.Geometry | null = null;
+  drawnItems = new L.FeatureGroup();
 
   constructor(
     private fb: FormBuilder,
@@ -39,49 +46,87 @@ export class UbicacionFormComponent {
     });
   }
 
-  getCoordenadasFicticias() {
-    return {
-      type: 'Polygon',
-      coordinates: [[
-        [-64.188, -31.420],
-        [-64.190, -31.421],
-        [-64.189, -31.423],
-        [-64.187, -31.422],
-        [-64.188, -31.420]
-      ]]
-    };
+  ngAfterViewInit(): void {
+    this.map = L.map('map').setView([4.5709, -74.2973], 6); // Centro en Colombia
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(this.map);
+
+    // Geocoder
+    (L.Control as any).geocoder().addTo(this.map);
+
+    // Capa de dibujos
+    this.map.addLayer(this.drawnItems);
+
+    const drawControl = new L.Control.Draw({
+      draw: {
+        polygon: true,
+        marker: false,
+        polyline: false,
+        rectangle: false,
+        circle: false,
+        circlemarker: false
+      },
+      edit: {
+        featureGroup: this.drawnItems
+      }
+    });
+
+    this.map.addControl(drawControl);
+
+    this.map.on(L.Draw.Event.CREATED, (event: any) => {
+      this.drawnItems.clearLayers();
+      const layer = event.layer;
+      this.drawnItems.addLayer(layer);
+      this.drawnCoordinates = layer.toGeoJSON().geometry;
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.map) {
+      this.map.remove();
+    }
   }
 
   onSubmit(): void {
-    if (this.ubicacionForm.valid) {
-      this.isSubmitting = true;
-
-      const payload = {
-        ...this.ubicacionForm.value,
-        coordenadas: this.getCoordenadasFicticias()
-      };
-
-      this.http.post(`${environment.apiUrl}/ubicaciones/`, payload)
-        .subscribe({
-          next: (ubicacion: any) => {
-            this.snackBar.open('Ubicación creada con éxito', 'Cerrar', { duration: 3000 });
-            this.ubicacionForm.reset();
-            this.ubicacionCreada.emit(ubicacion);
-            this.isSubmitting = false;
-          },
-          error: (error: any) => {
-            this.snackBar.open('Error al crear ubicación', 'Cerrar', { duration: 4000 });
-            console.error(error);
-            this.isSubmitting = false;
-          }
-        });
-    } else {
+    if (!this.ubicacionForm.valid) {
       Object.keys(this.ubicacionForm.controls).forEach(key => {
         const control = this.ubicacionForm.get(key);
         control?.markAsTouched();
       });
       this.snackBar.open('Por favor, complete todos los campos requeridos', 'Cerrar', { duration: 3000 });
+      return;
     }
+
+    if (!this.drawnCoordinates) {
+      this.snackBar.open('Por favor, dibuja una zona en el mapa.', 'Cerrar', { duration: 3000 });
+      return;
+    }
+
+    this.isSubmitting = true;
+
+    const payload = {
+      ...this.ubicacionForm.value,
+      coordenadas: this.drawnCoordinates
+    };
+
+    this.http.post(`${environment.apiUrl}/ubicaciones/`, payload)
+      .subscribe({
+        next: (ubicacion: any) => {
+          this.snackBar.open('Ubicación creada con éxito', 'Cerrar', { duration: 3000 });
+          this.ubicacionForm.reset();
+          this.ubicacionCreada.emit(ubicacion);
+          this.drawnItems.clearLayers();
+          this.drawnCoordinates = null;
+          this.isSubmitting = false;
+        },
+        error: (error: any) => {
+          this.snackBar.open('Error al crear ubicación', 'Cerrar', { duration: 4000 });
+          console.error(error);
+          this.isSubmitting = false;
+        }
+      });
   }
 
   hasError(controlName: string, errorName: string): boolean {

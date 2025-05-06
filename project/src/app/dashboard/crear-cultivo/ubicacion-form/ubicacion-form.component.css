@@ -1,12 +1,16 @@
 .full-width {
   width: 100%;
+  margin-bottom: 16px;
 }
 
-mat-card {
-  margin: 24px auto;
-  max-width: 500px;
+.map-container {
+  height: 400px;
+  width: 100%;
+  margin-top: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
 }
 
-button[type="submit"] {
+.mt-2 {
   margin-top: 16px;
 }
