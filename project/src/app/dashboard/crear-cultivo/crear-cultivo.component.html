@@ -20,5 +20,15 @@
       </div>
     </ng-container>
 
+    <!-- Paso 3: Mostrar cronograma -->
+    <ng-container *ngSwitchCase="3">
+      <h2>Cronograma de riego</h2>
+      <app-cronograma-display [cultivo]="cultivoCreadoData"></app-cronograma-display>
+
+      <div style="margin-top: 1rem;">
+        <button mat-button (click)="step = 2">← Volver al cultivo</button>
+      </div>
+    </ng-container>
+
   </ng-container>
 </div>
