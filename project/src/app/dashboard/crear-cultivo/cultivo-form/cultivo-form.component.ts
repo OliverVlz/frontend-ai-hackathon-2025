@@ -69,7 +69,7 @@ export class CultivoFormComponent {
 
     if (this.ubicacionId) {
       this.cultivoForm.patchValue({
-        ubicacion: this.ubicacionId  
+        ubicacion: this.ubicacionId.id // Asegurarse de que se use el ID correcto
       });
     }
   }

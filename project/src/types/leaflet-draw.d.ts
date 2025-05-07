@@ -1,3 +1,4 @@
+// src/types/leaflet-draw.d.ts
 import * as L from 'leaflet';
 
 declare module 'leaflet' {
@@ -7,16 +8,39 @@ declare module 'leaflet' {
     }
   }
 
-  namespace Draw {
-    interface Event {
+  namespace DrawEvents {
+    interface Created {
       layerType: string;
-      layer: any;
+      layer: L.Layer;
+    }
+  }
+
+  namespace Draw {
+    interface Options {
+      draw: {
+        polygon?: boolean;
+        marker?: boolean;
+        polyline?: boolean;
+        rectangle?: boolean;
+        circle?: boolean;
+        circlemarker?: boolean;
+      };
+      edit: {
+        featureGroup: L.FeatureGroup;
+      };
     }
 
     const Event: {
       CREATED: string;
       EDITED: string;
       DELETED: string;
+      START: string;
+      STOP: string;
+      ACTION: string;
+      DRAWSTART: string;
+      DRAWSTOP: string;
+      DRAWACTION: string;
+      DRAW: string;
     };
   }
 }

@@ -31,7 +31,7 @@ Frontend para la aplicación AiRiego, desarrollado con Angular y Angular Materia
 1. Clonar el repositorio:
    ```bash
    git clone https://github.com/tu-usuario/frontend-ai-hackathon-2025.git
-   cd frontend-ai-hackathon-2025
+   cd frontend-ai-hackathon-2025/project
    ```
 
 2. Construir y ejecutar el contenedor con Docker:

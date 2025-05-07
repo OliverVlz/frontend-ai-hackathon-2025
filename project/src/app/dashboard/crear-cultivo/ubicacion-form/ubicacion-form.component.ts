@@ -8,10 +8,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
+import { FormControl } from '@angular/forms';
 
 import * as L from 'leaflet';
 import 'leaflet-draw';
-import 'leaflet-control-geocoder';
 
 @Component({
   selector: 'app-ubicacion-form',
@@ -34,31 +34,41 @@ export class UbicacionFormComponent implements AfterViewInit, OnDestroy {
   map!: L.Map;
   drawnCoordinates: GeoJSON.Geometry | null = null;
   drawnItems = new L.FeatureGroup();
+  
+  // Campos de ubicación
+  pais: string = '';
+  ciudad: string = '';
 
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
     private snackBar: MatSnackBar
   ) {
-    this.ubicacionForm = this.fb.group({
-      pais: ['', Validators.required],
-      ciudad: ['', Validators.required]
-    });
+    // Initialize the form without any fields
+    this.ubicacionForm = this.fb.group({});
   }
 
   ngAfterViewInit(): void {
     this.map = L.map('map').setView([4.5709, -74.2973], 6); // Centro en Colombia
-
+  
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(this.map);
-
-    // Geocoder
-    (L.Control as any).geocoder().addTo(this.map);
-
-    // Capa de dibujos
+  
+    // Añadimos el controlador de geocodificación para búsqueda
+    // Nota: usamos una forma más compatible en lugar de L.Control.geocoder()
+    const geocoder = L.Control.extend({
+      onAdd: function() {
+        const div = L.DomUtil.create('div', 'leaflet-control-geocoder');
+        div.innerHTML = '<input type="text" placeholder="Buscar ubicación..." />';
+        return div;
+      }
+    });
+    
+    new geocoder({ position: 'topleft' }).addTo(this.map);
+  
     this.map.addLayer(this.drawnItems);
-
+  
     const drawControl = new L.Control.Draw({
       draw: {
         polygon: true,
@@ -72,14 +82,64 @@ export class UbicacionFormComponent implements AfterViewInit, OnDestroy {
         featureGroup: this.drawnItems
       }
     });
-
+  
     this.map.addControl(drawControl);
-
+  
     this.map.on(L.Draw.Event.CREATED, (event: any) => {
       this.drawnItems.clearLayers();
       const layer = event.layer;
       this.drawnItems.addLayer(layer);
       this.drawnCoordinates = layer.toGeoJSON().geometry;
+  
+      // Obtener el centro del polígono
+      const centro = layer.getBounds().getCenter();
+      
+      // Realizar geocodificación inversa usando la API de Nominatim (OpenStreetMap)
+      this.geocodeReverse(centro.lat, centro.lng);
+    });
+    
+    // Evento para cuando se edita un polígono existente
+    this.map.on(L.Draw.Event.EDITED, (event: any) => {
+      const layers = event.layers;
+      layers.eachLayer((layer: any) => {
+        this.drawnCoordinates = layer.toGeoJSON().geometry;
+        const centro = layer.getBounds().getCenter();
+        this.geocodeReverse(centro.lat, centro.lng);
+      });
+    });
+  }
+
+  // Método para hacer geocodificación inversa usando la API pública de Nominatim
+  geocodeReverse(lat: number, lng: number): void {
+    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`;
+    
+    this.http.get(url).subscribe({
+      next: (response: any) => {
+        if (response && response.address) {
+          this.ciudad = response.address.city || 
+                       response.address.town || 
+                       response.address.village || 
+                       response.address.hamlet || 
+                       response.address.suburb || 
+                       '';
+          
+          this.pais = response.address.country || '';
+          
+          this.snackBar.open(`Ubicación detectada: ${this.ciudad}, ${this.pais}`, 'Cerrar', { 
+            duration: 3000 
+          });
+        } else {
+          this.snackBar.open('No se pudo detectar la ubicación', 'Cerrar', { 
+            duration: 3000 
+          });
+        }
+      },
+      error: (error) => {
+        console.error('Error en la geocodificación inversa:', error);
+        this.snackBar.open('No se pudo obtener la ubicación automáticamente', 'Cerrar', { 
+          duration: 3000 
+        });
+      }
     });
   }
 
@@ -89,25 +149,22 @@ export class UbicacionFormComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  onSubmit(): void {
-    if (!this.ubicacionForm.valid) {
-      Object.keys(this.ubicacionForm.controls).forEach(key => {
-        const control = this.ubicacionForm.get(key);
-        control?.markAsTouched();
-      });
-      this.snackBar.open('Por favor, complete todos los campos requeridos', 'Cerrar', { duration: 3000 });
+  onSubmit() {
+    if (!this.drawnCoordinates) {
+      this.snackBar.open('Por favor, dibuja una zona en el mapa.', 'Cerrar', { duration: 3000 });
       return;
     }
 
-    if (!this.drawnCoordinates) {
-      this.snackBar.open('Por favor, dibuja una zona en el mapa.', 'Cerrar', { duration: 3000 });
+    if (!this.ciudad || !this.pais) {
+      this.snackBar.open('No se pudo determinar la ubicación. Por favor, intente de nuevo.', 'Cerrar', { duration: 3000 });
       return;
     }
 
     this.isSubmitting = true;
 
     const payload = {
-      ...this.ubicacionForm.value,
+      ciudad: this.ciudad,
+      pais: this.pais,
       coordenadas: this.drawnCoordinates
     };
 
@@ -116,9 +173,11 @@ export class UbicacionFormComponent implements AfterViewInit, OnDestroy {
         next: (ubicacion: any) => {
           this.snackBar.open('Ubicación creada con éxito', 'Cerrar', { duration: 3000 });
           this.ubicacionForm.reset();
-          this.ubicacionCreada.emit(ubicacion);
+          this.ubicacionCreada.emit(ubicacion); // Emitir el objeto completo de ubicación
           this.drawnItems.clearLayers();
           this.drawnCoordinates = null;
+          this.ciudad = '';
+          this.pais = '';
           this.isSubmitting = false;
         },
         error: (error: any) => {

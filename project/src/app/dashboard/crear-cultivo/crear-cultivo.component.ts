@@ -12,10 +12,10 @@ import { CultivoFormComponent } from './cultivo-form/cultivo-form.component';
 })
 export class CrearCultivoComponent {
   step = 1;
-  ubicacionId: number | null = null;
+  ubicacionId: any | null = null;
 
   onUbicacionCreada(ubicacion: any) {
-    this.ubicacionId = ubicacion.id;
+    this.ubicacionId = ubicacion; // Asegurar-se de que se reciba el objeto completo de ubicación
     this.step = 2;
   }
 
