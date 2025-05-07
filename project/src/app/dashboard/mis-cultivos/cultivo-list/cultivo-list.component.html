@@ -1,1 +1,60 @@
-<p>cultivo-list works!</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Mis Cultivos</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div *ngIf="cultivos.length > 0; else noCultivos">
+      <mat-expansion-panel *ngFor="let cultivo of cultivos" class="mb-4">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ cultivo.nombre }}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{ cultivo.etapa_crecimiento }} | Tasa de Flujo: {{ cultivo.tasa_flujo }} gal/min
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-grid-list cols="2" rowHeight="50px" gutterSize="16px">
+          <mat-grid-tile>
+            <strong>Tipo de Cultivo:</strong>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            {{ cultivo.tipo_cultivo_info?.nombre }}
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <strong>Descripción:</strong>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            {{ cultivo.tipo_cultivo_info?.descripcion }}
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <strong>Tipo de Riego:</strong>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            {{ cultivo.tipo_riego_info?.nombre }}
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <strong>Eficiencia:</strong>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            {{ cultivo.tipo_riego_info?.eficiencia * 100 }}%
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <strong>Ubicación:</strong>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            {{ cultivo.ubicacion_info?.ciudad }}, {{ cultivo.ubicacion_info?.pais }}
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <strong>Área:</strong>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            {{ cultivo.ubicacion_info?.area.toFixed(2) }} m²
+          </mat-grid-tile>
+        </mat-grid-list>
+      </mat-expansion-panel>
+    </div>
+    <ng-template #noCultivos>
+      <p>No tienes cultivos registrados.</p>
+    </ng-template>
+  </mat-card-content>
+</mat-card>

@@ -18,8 +18,6 @@ export class AuthService {
 
   // Login y obtener tokens
   login(data: { username: string; password: string }): Observable<any> {
-    // La ruta de token está en el urls.py principal, no en riego/urls.py
-    // Por eso necesitamos quitar 'api/' de la ruta y usar '/api/token/' directamente
     return this.http.post(`${environment.apiUrl.replace('/api', '')}/api/token/`, data);
   }
 
@@ -37,6 +35,21 @@ export class AuthService {
   // Obtener token de acceso
   getAccessToken(): string | null {
     return localStorage.getItem('access_token');
+  }
+
+  // Obtener el ID del usuario desde el perfil
+  getUserId(): Observable<number | null> {
+    return new Observable<number | null>(observer => {
+      this.getProfile().subscribe({
+        next: (profile) => {
+          observer.next(profile.id);
+        },
+        error: (error) => {
+          console.error('Error al obtener el perfil del usuario', error);
+          observer.next(null);
+        }
+      });
+    });
   }
 
   logout(): void {

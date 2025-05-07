@@ -33,14 +33,16 @@
       </mat-form-field>
   
       <!-- Tipo de riego -->
-      <mat-form-field appearance="outline" class="full-width">
+      <mat-form-field>
         <mat-label>Tipo de Riego</mat-label>
-        <mat-select formControlName="tipo_riego">
+        <mat-select formControlName="tipo_riego" required>
           <mat-option *ngFor="let tipo of tiposRiego" [value]="tipo.id">
-            {{ tipo.nombre_display || tipo.nombre }}
+            {{ tipo.nombreCapitalizado }}
           </mat-option>
         </mat-select>
-        <mat-error *ngIf="hasError('tipo_riego', 'required')">El tipo de riego es obligatorio</mat-error>
+        <mat-error *ngIf="hasError('tipo_riego', 'required')">
+          Tipo de riego es requerido.
+        </mat-error>
       </mat-form-field>
   
       <!-- Tasa de flujo -->

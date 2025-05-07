@@ -62,8 +62,14 @@ export class CultivoFormComponent {
       error: (error) => { console.error('Error al obtener tipos de cultivo', error); }
     });
 
+    // Llame a la API para obtener los tipos de riego y formatee los nombres
     this.http.get<any[]>(`${environment.apiUrl}/tipos-riego/`).subscribe({
-      next: (data) => { this.tiposRiego = data; },
+      next: (data) => { 
+        this.tiposRiego = data.map(tipo => ({
+          ...tipo,
+          nombreCapitalizado: this.capitalizeFirstLetter(tipo.nombre)
+        })); 
+      },
       error: (error) => { console.error('Error al obtener tipos de riego', error); }
     });
 
@@ -104,5 +110,8 @@ export class CultivoFormComponent {
   hasError(controlName: string, errorName: string): boolean {
     const control = this.cultivoForm.get(controlName);
     return !!control && control.touched && control.hasError(errorName);
+  }
+  capitalizeFirstLetter(value: string): string {
+    return value.charAt(0).toUpperCase() + value.slice(1);
   }
 }
