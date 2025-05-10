@@ -2,13 +2,17 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { CommonModule } from '@angular/common';
+import { ChatbotComponent } from '../../../shared/chatbot/chatbot.component';
 
 @Component({
   selector: 'app-cronograma-display',
   templateUrl: './cronograma-display.component.html',
   styleUrls: ['./cronograma-display.component.css'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [
+    CommonModule,
+    ChatbotComponent,
+  ]
 })
 export class CronogramaDisplayComponent implements OnInit {
   @Input() cultivo!: any;
@@ -17,6 +21,9 @@ export class CronogramaDisplayComponent implements OnInit {
   cronograma: any[] = [];
   loading = true;
 
+  cultivoPrueba = {
+    id: 10,
+  };
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {

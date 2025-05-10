@@ -11,7 +11,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { CronogramaListComponent } from './mis-cronogramas/cronograma-list/cronograma-list.component';
 import { CrearCultivoComponent } from '../dashboard/crear-cultivo/crear-cultivo.component';
 import { CultivoListComponent } from '../dashboard/mis-cultivos/cultivo-list/cultivo-list.component';
-
+import { ChatbotComponent } from '../shared/chatbot/chatbot.component';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -29,12 +29,16 @@ import { CultivoListComponent } from '../dashboard/mis-cultivos/cultivo-list/cul
     MatCardModule,
     CrearCultivoComponent,
     CultivoListComponent,
-    CronogramaListComponent
+    CronogramaListComponent,
+    ChatbotComponent
   ]
 })
 export class DashboardComponent {
   seccion: 'inicio' | 'crear-cultivo' | 'mis-cultivos' | 'mis-cronogramas' = 'inicio';
 
+  cultivoPrueba = {
+    id: 12,
+  };
   seleccionarSeccion(seccion: 'inicio' | 'crear-cultivo' | 'mis-cultivos' | 'mis-cronogramas') {
     this.seccion = seccion;
   }
