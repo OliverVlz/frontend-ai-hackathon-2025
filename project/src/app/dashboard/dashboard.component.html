@@ -10,6 +10,9 @@
       <mat-list-item>
         <button mat-button (click)="seleccionarSeccion('mis-cultivos')">Mis cultivos</button>
       </mat-list-item>
+      <mat-list-item>
+        <button mat-button (click)="seleccionarSeccion('mis-cronogramas')">Mis cronogramas</button>
+      </mat-list-item>
       <div class="user-section">
         <mat-divider></mat-divider>
         <mat-list-item>
@@ -58,6 +61,9 @@
         </ng-container>
         <ng-container *ngSwitchCase="'mis-cultivos'">
           <app-cultivo-list></app-cultivo-list>
+        </ng-container>
+        <ng-container *ngSwitchCase="'mis-cronogramas'">
+          <app-cronograma-list></app-cronograma-list>
         </ng-container>
       </ng-container>
     </div>

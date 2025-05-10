@@ -1,60 +1,88 @@
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Mis Cultivos</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="cultivos.length > 0; else noCultivos">
-      <mat-expansion-panel *ngFor="let cultivo of cultivos" class="mb-4">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            {{ cultivo.nombre }}
-          </mat-panel-title>
-          <mat-panel-description>
-            {{ cultivo.etapa_crecimiento }} | Tasa de Flujo: {{ cultivo.tasa_flujo }} gal/min
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <mat-grid-list cols="2" rowHeight="50px" gutterSize="16px">
-          <mat-grid-tile>
-            <strong>Tipo de Cultivo:</strong>
-          </mat-grid-tile>
-          <mat-grid-tile>
-            {{ cultivo.tipo_cultivo_info?.nombre }}
-          </mat-grid-tile>
-          <mat-grid-tile>
-            <strong>Descripción:</strong>
-          </mat-grid-tile>
-          <mat-grid-tile>
-            {{ cultivo.tipo_cultivo_info?.descripcion }}
-          </mat-grid-tile>
-          <mat-grid-tile>
-            <strong>Tipo de Riego:</strong>
-          </mat-grid-tile>
-          <mat-grid-tile>
-            {{ cultivo.tipo_riego_info?.nombre }}
-          </mat-grid-tile>
-          <mat-grid-tile>
-            <strong>Eficiencia:</strong>
-          </mat-grid-tile>
-          <mat-grid-tile>
-            {{ cultivo.tipo_riego_info?.eficiencia * 100 }}%
-          </mat-grid-tile>
-          <mat-grid-tile>
-            <strong>Ubicación:</strong>
-          </mat-grid-tile>
-          <mat-grid-tile>
-            {{ cultivo.ubicacion_info?.ciudad }}, {{ cultivo.ubicacion_info?.pais }}
-          </mat-grid-tile>
-          <mat-grid-tile>
-            <strong>Área:</strong>
-          </mat-grid-tile>
-          <mat-grid-tile>
-            {{ cultivo.ubicacion_info?.area.toFixed(2) }} m²
-          </mat-grid-tile>
-        </mat-grid-list>
-      </mat-expansion-panel>
+<div class="cultivos-container mat-elevation-z4">
+  <div class="header">
+    <h1 class="title">🌱 Mis Cultivos</h1>
+  </div>
+
+  <ng-container *ngIf="cultivos.length; else noCultivos">
+    <div class="cards-grid">
+      <mat-card 
+        *ngFor="let cultivo of cultivos"
+        class="cultivo-card mat-elevation-z2"
+      >
+        <mat-card-header class="card-header">
+          <div mat-card-avatar class="avatar-icon">
+            <mat-icon>agriculture</mat-icon>
+          </div>
+          <mat-card-title>{{ cultivo.nombre }}</mat-card-title>
+          <mat-card-subtitle>
+            {{ cultivo.tipo_cultivo_info?.descripcion }} | 
+            <span class="tasa-flujo">
+              Tasa de flujo: {{ cultivo.tasa_flujo }} gal/h
+            </span>
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content class="card-content">
+          <div class="info-grid">
+            <div class="info-item">
+              <mat-icon class="info-icon">agriculture</mat-icon>
+              <div class="info-text">
+                <div class="label">Tipo de Cultivo</div>
+                <div class="value">{{ cultivo.tipo_cultivo_info?.nombre }}</div>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <mat-icon class="info-icon">description</mat-icon>
+              <div class="info-text">
+                <div class="label">Etapa</div>
+                <div class="value">{{ cultivo.etapa_crecimiento }}</div>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <mat-icon class="info-icon">water_drop</mat-icon>
+              <div class="info-text">
+                <div class="label">Tipo de Riego</div>
+                <div class="value">{{ cultivo.tipo_riego_info?.nombre }}</div>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <mat-icon class="info-icon">build</mat-icon>
+              <div class="info-text">
+                <div class="label">Tasa de flujo</div>
+                <div class="value">{{ cultivo.tasa_flujo }} gal/h</div>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <mat-icon class="info-icon">place</mat-icon>
+              <div class="info-text">
+                <div class="label">Ubicación</div>
+                <div class="value">{{ cultivo.ubicacion_info?.ciudad }}, {{ cultivo.ubicacion_info?.pais }}</div>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <mat-icon class="info-icon">square_foot</mat-icon>
+              <div class="info-text">
+                <div class="label">Área</div>
+                <div class="value">{{ cultivo.ubicacion_info?.area.toFixed(2) }} m²</div>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
     </div>
-    <ng-template #noCultivos>
-      <p>No tienes cultivos registrados.</p>
-    </ng-template>
-  </mat-card-content>
-</mat-card>
+  </ng-container>
+
+  <ng-template #noCultivos>
+    <mat-card class="no-data-card">
+      <mat-card-content>
+        <mat-icon class="no-data-icon">agriculture</mat-icon>
+        <p>No tienes cultivos registrados aún.</p>
+      </mat-card-content>
+    </mat-card>
+  </ng-template>
+</div>

@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './cronograma-display.component.html',
   styleUrls: ['./cronograma-display.component.css'],
   standalone: true,
-  imports: [CommonModule] // ✅ Mover aquí correctamente
+  imports: [CommonModule]
 })
 export class CronogramaDisplayComponent implements OnInit {
   @Input() cultivo!: any;
@@ -20,16 +20,22 @@ export class CronogramaDisplayComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.http.get<any[]>(`${environment.apiUrl}/cultivos/${this.cultivo}/cronograma/`).subscribe({
-      next: (data) => {
-        this.cronograma = data;
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Error al obtener el cronograma:', error);
-        this.loading = false;
-      }
-    });
+    if (this.cultivo && this.cultivo.id) {
+      this.http.post<any>(
+        `${environment.apiUrl}/cultivos/${this.cultivo.id}/generar-cronograma/`,
+        {},
+        { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }
+      ).subscribe({
+        next: (data) => {
+          this.cronograma = data.detalles || [];
+          this.loading = false;
+        },
+        error: (error) => {
+          console.error('Error al obtener/generar el cronograma:', error);
+          this.loading = false;
+        }
+      });
+    }
   }
 
   volver() {

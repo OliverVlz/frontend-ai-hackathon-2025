@@ -13,6 +13,7 @@ import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../services/auth.service';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-cultivo-list',
@@ -29,8 +30,9 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatSelectModule,
     MatOptionModule,
     MatListModule,
-    MatExpansionModule,  // Importación de MatExpansionModule
-    MatGridListModule   // Importación de MatGridListModule
+    MatExpansionModule, 
+    MatGridListModule,
+    MatIconModule  
   ]
 })
 export class CultivoListComponent implements OnInit {
