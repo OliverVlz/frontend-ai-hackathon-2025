@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
@@ -8,11 +8,11 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatTabsModule } from '@angular/material/tabs';
-
-import { ZonaCultivoFormComponent } from '../dashboard/zona-cultivo-form/zona-cultivo-form.component';
-import { ZonaCultivoListComponent } from '../dashboard/zona-cultivo-list/zona-cultivo-list.component';
-
+import { CronogramaListComponent } from './mis-cronogramas/cronograma-list/cronograma-list.component';
+import { CrearCultivoComponent } from '../dashboard/crear-cultivo/crear-cultivo.component';
+import { CultivoListComponent } from '../dashboard/mis-cultivos/cultivo-list/cultivo-list.component';
+import { ClimaCardsComponent } from '../dashboard/clima-cards/clima-cards.component';
+import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -28,15 +28,36 @@ import { ZonaCultivoListComponent } from '../dashboard/zona-cultivo-list/zona-cu
     MatDividerModule,
     MatGridListModule,
     MatCardModule,
-    MatTabsModule,
-    ZonaCultivoFormComponent,
-    ZonaCultivoListComponent
+    CrearCultivoComponent,
+    CultivoListComponent,
+    CronogramaListComponent,
+    ClimaCardsComponent,
+    MatIconModule
   ]
 })
 export class DashboardComponent {
-  cards = [
-    { title: 'Card 1', content: 'Content for card 1' },
-    { title: 'Card 2', content: 'Content for card 2' },
-    { title: 'Card 3', content: 'Content for card 3' },
-  ];
+  seccion: 'inicio' | 'crear-cultivo' | 'mis-cultivos' | 'mis-cronogramas' = 'inicio';
+
+  isMobile = window.innerWidth < 768;
+  sidenavOpened = false;
+  sidebarOpened = false;
+
+  @HostListener('window:resize')
+  onResize() {
+    this.isMobile = window.innerWidth <= 768;
+  }
+
+  seleccionarSeccion(seccion: typeof this.seccion) {
+    this.seccion = seccion;
+  }
+
+  toggleSidebar() {
+    this.sidebarOpened = !this.sidebarOpened;
+  }
+
+  closeOnMobile() {
+    if (this.isMobile) {
+      this.sidebarOpened = false;
+    }
+  }
 }

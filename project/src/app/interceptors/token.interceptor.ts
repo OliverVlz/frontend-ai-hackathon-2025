@@ -10,8 +10,6 @@ export const tokenInterceptor: HttpInterceptorFn = (
     '/api/registro/',
     '/api/token/',
     '/api/token/refresh/',
-    '/api/tipos-cultivo/',
-    '/api/tipos-riego/'
   ];
   
   // Verificar si la URL actual está en la lista de rutas públicas

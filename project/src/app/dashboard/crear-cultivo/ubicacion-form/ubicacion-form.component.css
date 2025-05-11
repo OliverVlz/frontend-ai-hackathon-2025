@@ -1,0 +1,39 @@
+.full-width {
+  width: 100%;
+}
+.map-container {
+  height: 450px;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #e4e4e4;  
+}
+.accept-button {
+  background-color: #1976D2;
+  color: white;
+  font-size: 1rem;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin: 15px auto;
+  display: flex;
+  
+
+}
+
+.accept-button:hover {
+  background-color: #1565C0;
+  transform: scale(1.05);
+}
+
+.accept-button:focus {
+  outline: none;
+}
+
+.accept-button:active {
+  background-color: #42A5F5;
+}
+
+

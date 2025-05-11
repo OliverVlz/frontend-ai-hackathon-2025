@@ -1,0 +1,30 @@
+<div class="cronograma-container" *ngIf="loading; else showCronograma">
+  <p>Cargando cronograma...</p>
+</div>
+
+<ng-template #showCronograma>
+  <div class="cronograma-table-container">
+    <table class="cronograma-table">
+      <thead>
+        <tr>
+          <th>Día</th>
+          <th>Fecha</th>
+          <th>Cantidad de Agua (gal)</th>
+          <th>Tiempo de Riego (horas)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let dia of cronograma">
+          <td>{{ dia.dia }}</td>
+          <td>{{ dia.fecha }}</td>
+          <td>{{ dia.cantidad_agua | number:'1.0-2' }}</td>
+          <td>{{ dia.duracion_horas | number:'1.0-2' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <app-chatbot
+    [cultivoId]="cultivo.id">
+  </app-chatbot>
+
+</ng-template>

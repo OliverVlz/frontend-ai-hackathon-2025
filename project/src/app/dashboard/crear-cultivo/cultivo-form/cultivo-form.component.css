@@ -1,0 +1,98 @@
+.form-card {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  font-family: 'Roboto', sans-serif;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: space-between;
+}
+
+.form-field {
+  width: 100%;
+}
+
+.half-width {
+  width: 48%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.mat-form-field {
+  margin-bottom: 1rem;
+}
+
+.mat-label {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.mat-input-element {
+  font-size: 1rem;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+}
+
+.mat-hint {
+  font-size: 0.9rem;
+  color: #757575;
+}
+
+.mat-raised-button {
+  font-size: 1.1rem;
+  padding: 0.9rem 2rem;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, transform 0.2s ease;
+}
+
+.mat-raised-button:hover {
+  transform: translateY(-4px);
+  background-color: #1976d2;
+}
+
+.mat-raised-button:disabled {
+  background-color: #b0bec5;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.mat-error {
+  color: #f44336;
+  font-size: 0.9rem;
+}
+
+.mat-form-field.mat-focused .mat-label {
+  color: #1976d2;
+}
+
+.mat-select {
+  font-size: 1rem;
+}
+
+.mat-select-trigger {
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+}
+
+.mat-select-value {
+  color: #555;
+}

@@ -1,0 +1,6 @@
+{
+  "name": "frontend-root",
+  "scripts": {
+    "heroku-postbuild": "cd project && npm install && npm run build"
+  }
+}

@@ -1,63 +1,81 @@
 <mat-sidenav-container class="dashboard-container">
-  <mat-sidenav mode="side" opened>
+  <mat-sidenav #sidenav 
+               [mode]="isMobile ? 'over' : 'side'" 
+               [opened]="!isMobile || sidebarOpened"
+               [ngClass]="{ 'collapsed': isMobile && !sidebarOpened }">
+
     <mat-nav-list>
-      <mat-list-item>
-        <button mat-button>Inicio</button>
-      </mat-list-item>
-      <mat-list-item>
-        <button mat-button>Mis cultivos</button>
-      </mat-list-item>
-      <div class="user-section">
+      
+        <button mat-button (click)="seleccionarSeccion('inicio'); closeOnMobile()">
+          🏠 <span class="item-label">Inicio</span>
+        </button>
+      
+      
+        <button mat-button (click)="seleccionarSeccion('crear-cultivo'); closeOnMobile()">
+          🌱 <span class="item-label">Crear cultivo</span>
+        </button>
+      
+      
+        <button mat-button (click)="seleccionarSeccion('mis-cultivos'); closeOnMobile()">
+          🌾 <span class="item-label">Mis cultivos</span>
+        </button>
+      
+      
+        <button mat-button (click)="seleccionarSeccion('mis-cronogramas'); closeOnMobile()">
+          📅 <span class="item-label">Mis cronogramas</span>
+        </button>
+      
+
+      <div class="user-section" *ngIf="!isMobile || sidebarOpened">
         <mat-divider></mat-divider>
-        <mat-list-item>
+        
           <mat-menu #userMenu="matMenu">
             <button mat-menu-item>Modificar información</button>
             <button mat-menu-item>Cambiar contraseña</button>
             <button mat-menu-item>Cerrar sesión</button>
           </mat-menu>
-          <button mat-button [matMenuTriggerFor]="userMenu">Usuario</button>
-        </mat-list-item>
+          <button mat-button [matMenuTriggerFor]="userMenu">👤 Usuario</button>
+        
       </div>
     </mat-nav-list>
   </mat-sidenav>
 
-<mat-sidenav-content>
-    <mat-toolbar color="primary">
-      <span>Dashboard</span>
-    </mat-toolbar>
+  <mat-sidenav-content>
+ 
+      <button mat-icon-button (click)="toggleSidebar()" *ngIf="isMobile">
+        <mat-icon>menu</mat-icon>
+      </button>
+
 
     <div class="dashboard-content">
-      <!-- Pestañas para navegar entre diferentes secciones -->
-      <mat-tab-group animationDuration="300ms">
-        <mat-tab label="Resumen">
-          <div class="tab-content">
-            <mat-grid-list cols="3" rowHeight="2:1" gutterSize="16px">
-              <mat-grid-tile *ngFor="let card of cards" [colspan]="1" [rowspan]="1">
-                <mat-card>
-                  <mat-card-header>
-                    <mat-card-title>{{ card.title }}</mat-card-title>
-                  </mat-card-header>
-                  <mat-card-content>
-                    <p>{{ card.content }}</p>
-                  </mat-card-content>
-                </mat-card>
-              </mat-grid-tile>
-            </mat-grid-list>
+      <ng-container [ngSwitch]="seccion">
+        <ng-container *ngSwitchCase="'inicio'">
+          <h2 class="texto-1">Bienvenido al Panel de Control</h2>
+          <app-clima-cards></app-clima-cards>
+          <div class="card-container">
+            <mat-card>
+              <app-cultivo-list [soloReciente]="true"></app-cultivo-list>
+            </mat-card>
+            <mat-card>
+              <div class="custom-wrapper">
+                <app-cronograma-list [soloReciente]="true"></app-cronograma-list>
+              </div>
+            </mat-card>
           </div>
-        </mat-tab>
-        
-        <mat-tab label="Nueva Zona de Cultivo">
-          <div class="tab-content">
-            <app-zona-cultivo-form></app-zona-cultivo-form>
-          </div>
-        </mat-tab>
-        
-        <mat-tab label="Mis Zonas">
-          <div class="tab-content">
-            <app-zona-cultivo-list></app-zona-cultivo-list>
-          </div>
-        </mat-tab>
-      </mat-tab-group>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'crear-cultivo'">
+          <app-crear-cultivo></app-crear-cultivo>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'mis-cultivos'">
+          <app-cultivo-list></app-cultivo-list>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'mis-cronogramas'">
+          <app-cronograma-list></app-cronograma-list>
+        </ng-container>
+      </ng-container>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
