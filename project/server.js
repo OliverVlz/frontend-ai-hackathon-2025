@@ -3,10 +3,10 @@ const path = require('path');
 const app = express();
 
 // Ruta al build de Angular
-app.use(express.static(path.join(__dirname, 'dist/project')));
+app.use(express.static(path.join(__dirname, 'project/dist/project')));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist/project/index.html'));
+  res.sendFile(path.join(__dirname, 'project/dist/project/index.html'));
 });
 
 const port = process.env.PORT || 8080;
