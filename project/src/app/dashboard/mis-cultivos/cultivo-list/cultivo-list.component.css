@@ -15,15 +15,26 @@
 }
 
 .title {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   margin: 0;
-  color: #2c3e50;
+  color: rgb(83, 88, 94);
   font-weight: 600;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
+mat-card-title {
+  font-size: 1.3rem; /* Cambia el tamaño del título */
+  font-weight: 500;
+  margin-bottom: .23rem;
+  color: #555555;
+}
 
+mat-card-subtitle {
+  font-size: 0.9rem; /* Cambia el tamaño del subtítulo */
+  font-weight: 450;
+  color: #666;
+}
 /* Grid de tarjetas */
 .cards-grid {
   display: grid;
@@ -75,7 +86,7 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1.2rem;
-  padding: 1rem 0;
+  padding: 1.3rem 0 0.6rem 0;
 }
 
 /* Item de información */

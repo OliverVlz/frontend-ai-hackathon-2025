@@ -1,71 +1,77 @@
 <mat-sidenav-container class="dashboard-container">
-  <mat-sidenav mode="side" opened>
+  <mat-sidenav #sidenav 
+               [mode]="isMobile ? 'over' : 'side'" 
+               [opened]="!isMobile || sidebarOpened"
+               [ngClass]="{ 'collapsed': isMobile && !sidebarOpened }">
+
     <mat-nav-list>
-      <mat-list-item>
-        <button mat-button (click)="seleccionarSeccion('inicio')">Inicio</button>
-      </mat-list-item>
-      <mat-list-item>
-        <button mat-button (click)="seleccionarSeccion('crear-cultivo')">Crear cultivo</button>
-      </mat-list-item>
-      <mat-list-item>
-        <button mat-button (click)="seleccionarSeccion('mis-cultivos')">Mis cultivos</button>
-      </mat-list-item>
-      <mat-list-item>
-        <button mat-button (click)="seleccionarSeccion('mis-cronogramas')">Mis cronogramas</button>
-      </mat-list-item>
-      <div class="user-section">
+      
+        <button mat-button (click)="seleccionarSeccion('inicio'); closeOnMobile()">
+          🏠 <span class="item-label">Inicio</span>
+        </button>
+      
+      
+        <button mat-button (click)="seleccionarSeccion('crear-cultivo'); closeOnMobile()">
+          🌱 <span class="item-label">Crear cultivo</span>
+        </button>
+      
+      
+        <button mat-button (click)="seleccionarSeccion('mis-cultivos'); closeOnMobile()">
+          🌾 <span class="item-label">Mis cultivos</span>
+        </button>
+      
+      
+        <button mat-button (click)="seleccionarSeccion('mis-cronogramas'); closeOnMobile()">
+          📅 <span class="item-label">Mis cronogramas</span>
+        </button>
+      
+
+      <div class="user-section" *ngIf="!isMobile || sidebarOpened">
         <mat-divider></mat-divider>
-        <mat-list-item>
+        
           <mat-menu #userMenu="matMenu">
             <button mat-menu-item>Modificar información</button>
             <button mat-menu-item>Cambiar contraseña</button>
             <button mat-menu-item>Cerrar sesión</button>
           </mat-menu>
-          <button mat-button [matMenuTriggerFor]="userMenu">Usuario</button>
-        </mat-list-item>
+          <button mat-button [matMenuTriggerFor]="userMenu">👤 Usuario</button>
+        
       </div>
     </mat-nav-list>
   </mat-sidenav>
 
-<mat-sidenav-content>
-    <mat-toolbar color="primary">
-      <span>Dashboard</span>
-    </mat-toolbar>
+  <mat-sidenav-content>
+ 
+      <button mat-icon-button (click)="toggleSidebar()" *ngIf="isMobile">
+        <mat-icon>menu</mat-icon>
+      </button>
+
 
     <div class="dashboard-content">
       <ng-container [ngSwitch]="seccion">
         <ng-container *ngSwitchCase="'inicio'">
-          <h2>HOLA BIENVENIDO AL INICIO</h2>
+          <h2 class="texto-1">Bienvenido al Panel de Control</h2>
+          <app-clima-cards></app-clima-cards>
           <div class="card-container">
             <mat-card>
-              <mat-card-header>
-                <mat-card-title>Resumen de cultivos</mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <p>Aquí puedes ver un resumen de tus cultivos, estadísticas, etc.</p>
-              </mat-card-content>
+              <app-cultivo-list [soloReciente]="true"></app-cultivo-list>
             </mat-card>
-            <app-chatbot
-              [cultivoId]="cultivoPrueba.id">
-            </app-chatbot>
-
             <mat-card>
-              <mat-card-header>
-                <mat-card-title>Próximos riegos</mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <p>Próximos eventos de riego programados...</p>
-              </mat-card-content>
+              <div class="custom-wrapper">
+                <app-cronograma-list [soloReciente]="true"></app-cronograma-list>
+              </div>
             </mat-card>
-            <!-- Puedes agregar más cards o componentes aquí -->
           </div>
         </ng-container>
+
         <ng-container *ngSwitchCase="'crear-cultivo'">
           <app-crear-cultivo></app-crear-cultivo>
         </ng-container>
+
         <ng-container *ngSwitchCase="'mis-cultivos'">
           <app-cultivo-list></app-cultivo-list>
         </ng-container>
+
         <ng-container *ngSwitchCase="'mis-cronogramas'">
           <app-cronograma-list></app-cronograma-list>
         </ng-container>

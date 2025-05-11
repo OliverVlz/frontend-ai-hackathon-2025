@@ -16,7 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTableModule } from '@angular/material/table';
 import { environment } from '../../../../environments/environment';
-
+import { Input } from '@angular/core';
 interface Cronograma {
   id: number;
   cultivo_nombre: string;
@@ -63,6 +63,9 @@ interface Detalle {
   ]
 })
 export class CronogramaListComponent implements OnInit {
+  @Input() soloReciente = false;
+  @Input() mostrarTitulo: boolean = true;
+
   cronogramas: Cronograma[] = [];
   displayedColumns: string[] = ['dia', 'fecha', 'hora', 'duracion', 'agua'];
 
@@ -73,7 +76,9 @@ export class CronogramaListComponent implements OnInit {
       .get<Cronograma[]>(`${environment.apiUrl}/cronogramas/?ordering=-fecha_generacion`)
       .subscribe({
         next: data => {
-          this.cronogramas = data.map(c => {
+          const lista = this.soloReciente ? [data[0]] : data;
+
+          this.cronogramas = lista.map(c => {
             const detallesWithFormat = c.detalles.map(d => ({
               ...d,
               duracion_formateada: this.formatDuration(d.duracion_horas)
@@ -88,7 +93,7 @@ export class CronogramaListComponent implements OnInit {
               detalles: detallesWithFormat,
               fecha_fin: fechaFin,
               agua_total: aguaTotal,
-              ubicacion: c.ubicacion // Asegurarte de que el campo esté disponible
+              ubicacion: c.ubicacion
             };
           });
         },

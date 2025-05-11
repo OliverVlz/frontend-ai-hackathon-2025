@@ -1,0 +1,74 @@
+:host {
+  display: block;
+  margin: 1rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.weather-card {
+  flex: 1 1 220px;
+  min-width: 100px;
+  max-width: 219px;
+  padding: 1.2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  background-color: #fdfdfa;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.weather-card:hover {
+  transform: translateY(-4px);
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+}
+
+
+.label {
+  font-size: 1rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+.value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #5a5a5a;
+  margin-bottom: 0;
+}
+
+/* Fondo personalizado por tipo */
+.weather-card{
+  background-color: #fffffb;
+}
+
+.icon {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  width: 50px;
+  height: 50px;
+  opacity: 0.9;
+}
+
+.loading-msg {
+  text-align: center;
+  font-style: italic;
+  color: #888;
+}

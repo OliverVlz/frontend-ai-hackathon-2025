@@ -14,6 +14,7 @@ import { AuthService } from '../../../services/auth.service';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
+import { Input } from '@angular/core';
 
 @Component({
   selector: 'app-cultivo-list',
@@ -36,6 +37,7 @@ import { MatIconModule } from '@angular/material/icon';
   ]
 })
 export class CultivoListComponent implements OnInit {
+  @Input() soloReciente = false;
   cultivos: any[] = [];
   userId: number | null = null;
 
@@ -48,31 +50,24 @@ export class CultivoListComponent implements OnInit {
     this.authService.getUserId().subscribe({
       next: (id) => {
         this.userId = id;
-        console.log('ID del usuario:', this.userId); // Verifica el ID del usuario
         if (this.userId !== null) {
           this.http.get<any[]>(`${environment.apiUrl}/cultivos/`).subscribe({
             next: (data) => {
-              console.log('Datos recibidos de la API:', data);
               if (!Array.isArray(data)) {
                 console.error('La respuesta de la API no es un array:', data);
                 return;
               }
 
-              const filteredCultivos = data.filter(cultivo => {
-                const isMatch = String(cultivo.propietario) === String(this.userId);
-                console.log(`Cultivo ${cultivo.nombre}: propietario=${cultivo.propietario}, userId=${this.userId}, match=${isMatch}`);
-                return isMatch;
-              });
+              const filteredCultivos = data
+                .filter(c => String(c.propietario) === String(this.userId))
+                .sort((a, b) => new Date(b.fecha_creacion).getTime() - new Date(a.fecha_creacion).getTime()); // ordena por fecha
 
-              this.cultivos = filteredCultivos;
-              console.log('Cultivos filtrados:', this.cultivos);
+              this.cultivos = this.soloReciente ? [filteredCultivos[0]] : filteredCultivos;
             },
             error: (error) => {
               console.error('Error al obtener cultivos', error);
             }
           });
-        } else {
-          console.error('No se pudo obtener el ID del usuario', Error);
         }
       },
       error: (error) => {

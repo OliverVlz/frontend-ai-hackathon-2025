@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
@@ -11,7 +11,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { CronogramaListComponent } from './mis-cronogramas/cronograma-list/cronograma-list.component';
 import { CrearCultivoComponent } from '../dashboard/crear-cultivo/crear-cultivo.component';
 import { CultivoListComponent } from '../dashboard/mis-cultivos/cultivo-list/cultivo-list.component';
-import { ChatbotComponent } from '../shared/chatbot/chatbot.component';
+import { ClimaCardsComponent } from '../dashboard/clima-cards/clima-cards.component';
+import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -30,16 +31,33 @@ import { ChatbotComponent } from '../shared/chatbot/chatbot.component';
     CrearCultivoComponent,
     CultivoListComponent,
     CronogramaListComponent,
-    ChatbotComponent
+    ClimaCardsComponent,
+    MatIconModule
   ]
 })
 export class DashboardComponent {
   seccion: 'inicio' | 'crear-cultivo' | 'mis-cultivos' | 'mis-cronogramas' = 'inicio';
 
-  cultivoPrueba = {
-    id: 12,
-  };
-  seleccionarSeccion(seccion: 'inicio' | 'crear-cultivo' | 'mis-cultivos' | 'mis-cronogramas') {
+  isMobile = window.innerWidth < 768;
+  sidenavOpened = false;
+  sidebarOpened = false;
+
+  @HostListener('window:resize')
+  onResize() {
+    this.isMobile = window.innerWidth <= 768;
+  }
+
+  seleccionarSeccion(seccion: typeof this.seccion) {
     this.seccion = seccion;
+  }
+
+  toggleSidebar() {
+    this.sidebarOpened = !this.sidebarOpened;
+  }
+
+  closeOnMobile() {
+    if (this.isMobile) {
+      this.sidebarOpened = false;
+    }
   }
 }
