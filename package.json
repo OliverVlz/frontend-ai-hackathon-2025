@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "start": "node server.js",
-    "heroku-postbuild": "npm install -g @angular/cli && npm install && ng build --configuration=production"
+    "heroku-postbuild": "cd project && npm install && npm install -g @angular/cli && ng build --configuration=production"
+}
   },
   "dependencies": {
     "express": "^4.18.2"
