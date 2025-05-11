@@ -4,7 +4,6 @@
   "scripts": {
     "start": "node server.js",
     "heroku-postbuild": "cd project && npm install && npm install -g @angular/cli && ng build --configuration=production"
-}
   },
   "dependencies": {
     "express": "^4.18.2"
