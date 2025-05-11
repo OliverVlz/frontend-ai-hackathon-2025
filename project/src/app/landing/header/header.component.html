@@ -1,9 +1,92 @@
-<nav class="navbar">
-    <a href="#hero" class="nav-link">Inicio</a>
-    <a href="#como-funciona" class="nav-link">Cómo funciona</a>
-    <a href="#quienes-somos" class="nav-link">Quiénes somos</a>
-    <a routerLink="/login">Iniciar sesión</a>
-    <a routerLink="/register">Registrarse</a> 
-    <a routerLink="/dashboard">Dashboard</a> 
-</nav>
-  
+<header class="dark-header" [class.scrolled]="isScrolled">
+  <div class="header-container">
+    <div class="logo-container">
+      <a routerLink="/" class="logo-link">
+
+        <span class="logo-text">AiRiego</span>
+      </a>
+    </div>
+
+    <nav class="main-nav">
+      <div class="nav-links">
+        <a routerLink="/" 
+           class="nav-link" 
+           routerLinkActive="active" 
+           [routerLinkActiveOptions]="{exact: true}"
+           (click)="closeMobileMenu()">
+          <span class="link-text">Inicio</span>
+          <span class="link-underline"></span>
+        </a>
+        <a [routerLink]="['/']" fragment="como-funciona" 
+           class="nav-link" 
+           routerLinkActive="active"
+           (click)="closeMobileMenu()">
+          <span class="link-text">Cómo Funcionamos</span>
+          <span class="link-underline"></span>
+        </a>
+        <a [routerLink]="['/']" fragment="quienes-somos" 
+           class="nav-link" 
+           routerLinkActive="active"
+           (click)="closeMobileMenu()">
+          <span class="link-text">Beneficios</span>
+          <span class="link-underline"></span>
+        </a>
+        <a [routerLink]="['/']" fragment="quienes-somos" 
+           class="nav-link" 
+           routerLinkActive="active"
+           (click)="closeMobileMenu()">
+          <span class="link-text">Quiénes Somos</span>
+          <span class="link-underline"></span>
+        </a>
+      </div>
+
+      <div class="auth-buttons">
+        <a routerLink="/login" class="auth-btn login-btn">
+          <span>Iniciar sesión</span>
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none">
+            <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M16 17L21 12L16 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </a>
+        <a routerLink="/register" class="auth-btn register-btn">
+          <span>Registrarse</span>
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none">
+            <path d="M16 21V19C16 17.9391 15.5786 16.9217 14.8284 16.1716C14.0783 15.4214 13.0609 15 12 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M8.5 11C10.7091 11 12.5 9.20914 12.5 7C12.5 4.79086 10.7091 3 8.5 3C6.29086 3 4.5 4.79086 4.5 7C4.5 9.20914 6.29086 11 8.5 11Z" stroke="currentColor" stroke-width="2"/>
+            <path d="M20 8V14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M17 11H23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="mobile-menu-toggle" (click)="toggleMobileMenu()">
+        <span [class.active]="isMobileMenuOpen"></span>
+        <span [class.active]="isMobileMenuOpen"></span>
+        <span [class.active]="isMobileMenuOpen"></span>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" [class.active]="isMobileMenuOpen">
+    <a routerLink="/" 
+       class="mobile-nav-link" 
+       routerLinkActive="active" 
+       [routerLinkActiveOptions]="{exact: true}"
+       (click)="closeMobileMenu()">Inicio</a>
+    <a [routerLink]="['/']" fragment="como-funciona" 
+       class="mobile-nav-link" 
+       (click)="closeMobileMenu()">Cómo Funciona</a>
+    <a [routerLink]="['/']" fragment="quienes-somos" 
+       class="mobile-nav-link" 
+       (click)="closeMobileMenu()">Beneficios</a>
+    <a [routerLink]="['/']" fragment="quienes-somos" 
+       class="mobile-nav-link" 
+       (click)="closeMobileMenu()">Quiénes Somos</a>
+    <div class="mobile-auth-buttons">
+      <a routerLink="/login" class="mobile-auth-btn" (click)="closeMobileMenu()">Iniciar sesión</a>
+      <a routerLink="/register" class="mobile-auth-btn register" (click)="closeMobileMenu()">Registrarse</a>
+    </div>
+  </div>
+</header>
