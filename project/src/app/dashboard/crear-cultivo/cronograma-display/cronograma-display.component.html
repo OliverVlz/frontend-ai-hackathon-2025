@@ -4,7 +4,6 @@
 
 <ng-template #showCronograma>
   <div class="cronograma-table-container">
-    <h2>Cronograma de Riego</h2>
     <table class="cronograma-table">
       <thead>
         <tr>
@@ -25,9 +24,7 @@
     </table>
   </div>
   <app-chatbot
-    [cultivoId]="cultivoPrueba.id">
+    [cultivoId]="cultivo.id">
   </app-chatbot>
-  <div class="actions">
-    <button class="btn-volver" (click)="volver()">Volver</button>
-  </div>
+
 </ng-template>

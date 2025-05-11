@@ -21,9 +21,6 @@ export class CronogramaDisplayComponent implements OnInit {
   cronograma: any[] = [];
   loading = true;
 
-  cultivoPrueba = {
-    id: 10,
-  };
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {

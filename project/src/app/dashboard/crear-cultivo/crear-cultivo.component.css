@@ -1,0 +1,31 @@
+.container{
+    padding: 0.5rem 1rem;
+}
+.button-container {
+  display: flex;
+  justify-content: center;  /* Centra el botón horizontalmente */
+  align-items: center;      /* Asegura que el botón esté centrado verticalmente si es necesario */
+  width: 100%;              /* Asegura que el contenedor ocupe todo el ancho disponible */
+}
+
+button {
+  background-color: #eeeeee;
+  border-radius: 4px;
+  padding: 0.8rem 1.2rem;
+  transition: background-color 0.3s ease;
+  border: none;
+  display: inline-block;  /* Cambiado a inline-block, ya que no es necesario hacer display: flex */
+  cursor: pointer; ;
+}
+
+button:hover {
+  background-color: #dddddd;
+}
+
+h2{
+    font-size: 1.5rem;
+    color: #6e6e6e;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+}

@@ -1,9 +1,9 @@
-<div class="container" style="padding: 1rem;">
+<div class="container">
   <ng-container [ngSwitch]="step">
 
     <!-- Paso 1: Formulario de ubicación -->
     <ng-container *ngSwitchCase="1">
-      <h2>Crear ubicación</h2>
+      <h2>Dibuja tu Nueva Ubicación</h2>
       <app-ubicacion-form (ubicacionCreada)="onUbicacionCreada($event)"></app-ubicacion-form>
     </ng-container>
 
@@ -15,7 +15,7 @@
         (cultivoCreado)="onCultivoCreado($event)">
       </app-cultivo-form>
 
-      <div style="margin-top: 1rem;">
+      <div class="button-container" style="margin-top: 1rem;">
         <button mat-button color="warn" (click)="step = 1">← Volver a ubicación</button>
       </div>
     </ng-container>
@@ -25,7 +25,7 @@
       <h2>Cronograma de riego</h2>
       <app-cronograma-display [cultivo]="cultivoCreadoData"></app-cronograma-display>
 
-      <div style="margin-top: 1rem;">
+      <div class="button-container" style="margin-top: 1rem;">
         <button mat-button (click)="step = 2">← Volver al cultivo</button>
       </div>
     </ng-container>
