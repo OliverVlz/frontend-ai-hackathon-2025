@@ -1,1 +1,1 @@
-web: npm run start --prefix project
+web: node server.js

@@ -1,9 +1,14 @@
 {
-  "name": "frontend-root",
-  "engines": {
-    "node": "22.14.0"
-    },
+  "name": "angular-app-heroku",
+  "version": "1.0.0",
   "scripts": {
-    "heroku-postbuild": "cd project && npm install && npx ng build --configuration=production"
+    "start": "node server.js",
+    "heroku-postbuild": "npm install -g @angular/cli && npm install && ng build --configuration=production"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "engines": {
+    "node": "22.14"
   }
 }
