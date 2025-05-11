@@ -1,5 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-header',
@@ -9,6 +10,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
+  constructor(private viewportScroller: ViewportScroller) {}
   isMobileMenuOpen = false;
   isScrolled = false;
 
@@ -24,4 +26,10 @@ export class HeaderComponent {
   closeMobileMenu() {
     this.isMobileMenuOpen = false;
   }
+
+  scrollToSection(sectionId: string) {
+    this.viewportScroller.scrollToAnchor(sectionId);
+    this.closeMobileMenu(); // Si tienes este método
+  }
+
 }

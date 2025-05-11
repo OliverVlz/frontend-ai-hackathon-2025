@@ -9,8 +9,9 @@
 
     <nav class="main-nav">
       <div class="nav-links">
-        <a routerLink="/" 
+        <a routerLink="/"
            class="nav-link" 
+           (click)="scrollToSection('hero-section')"
            routerLinkActive="active" 
            [routerLinkActiveOptions]="{exact: true}"
            (click)="closeMobileMenu()">
@@ -19,6 +20,7 @@
         </a>
         <a [routerLink]="['/']" fragment="como-funciona" 
            class="nav-link" 
+           (click)="scrollToSection('como-funciona-section')"
            routerLinkActive="active"
            (click)="closeMobileMenu()">
           <span class="link-text">Cómo Funcionamos</span>
@@ -26,6 +28,7 @@
         </a>
         <a [routerLink]="['/']" fragment="quienes-somos" 
            class="nav-link" 
+           (click)="scrollToSection('beneficios-section')"
            routerLinkActive="active"
            (click)="closeMobileMenu()">
           <span class="link-text">Beneficios</span>
@@ -33,6 +36,7 @@
         </a>
         <a [routerLink]="['/']" fragment="quienes-somos" 
            class="nav-link" 
+           (click)="scrollToSection('quienes-somos-section')"
            routerLinkActive="active"
            (click)="closeMobileMenu()">
           <span class="link-text">Quiénes Somos</span>
@@ -72,17 +76,21 @@
   <div class="mobile-menu" [class.active]="isMobileMenuOpen">
     <a routerLink="/" 
        class="mobile-nav-link" 
+       (click)="scrollToSection('hero-section')"
        routerLinkActive="active" 
        [routerLinkActiveOptions]="{exact: true}"
        (click)="closeMobileMenu()">Inicio</a>
     <a [routerLink]="['/']" fragment="como-funciona" 
        class="mobile-nav-link" 
+       (click)="scrollToSection('como-funciona-section')"
        (click)="closeMobileMenu()">Cómo Funciona</a>
     <a [routerLink]="['/']" fragment="quienes-somos" 
        class="mobile-nav-link" 
+       (click)="scrollToSection('beneficios-section')"
        (click)="closeMobileMenu()">Beneficios</a>
     <a [routerLink]="['/']" fragment="quienes-somos" 
        class="mobile-nav-link" 
+       (click)="scrollToSection('quienes-somos-section')"
        (click)="closeMobileMenu()">Quiénes Somos</a>
     <div class="mobile-auth-buttons">
       <a routerLink="/login" class="mobile-auth-btn" (click)="closeMobileMenu()">Iniciar sesión</a>

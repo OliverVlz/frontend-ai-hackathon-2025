@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../services/auth.service';
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -17,6 +18,7 @@ import { AuthService } from '../services/auth.service';
     MatInputModule,
     MatCardModule,
     MatButtonModule,
+    RouterModule,
     ReactiveFormsModule
   ],
   templateUrl: './login.component.html',
@@ -51,3 +53,4 @@ export class LoginComponent {
     }
   } 
 }
+
