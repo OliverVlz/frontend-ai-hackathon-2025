@@ -1,6 +1,9 @@
 {
   "name": "frontend-root",
+  "engines": {
+    "node": "22.14.0"
+    },
   "scripts": {
-    "heroku-postbuild": "cd project && npm install && npm run build"
+    "heroku-postbuild": "cd project && npm install && npx ng build --configuration=production"
   }
 }
